@@ -18,7 +18,7 @@ error_reporting(E_ALL);
     {
         $this->register_post_type();
         $this->taxonomies();
-        $this->metaFields();
+        $this->metaboxes();
     }
 
     public function register_post_type() {
@@ -109,7 +109,7 @@ error_reporting(E_ALL);
         }
     }
 
-    public function metaFields() {
+    public function metaboxes() {
         add_action("add_meta_boxes", function () {
 
             add_meta_box("jw_movie_length", "Movie length", "movie_length", "jw_movie");
