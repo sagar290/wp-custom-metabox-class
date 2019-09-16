@@ -74,7 +74,7 @@ interface FieldInterface {
 
 
 
-class TextField {
+class TextField extend AbstractField{
 
     public $field;
 
@@ -90,9 +90,9 @@ class TextField {
 }
 $pera = new TextField;
 var_dump($pera->make()->field);
-// $pera = Pera::addForm('form')->addFields(
-//    TextField::create('id')->setName("test")->setLabel("label")->make()
-// )->create();
+$pera = Pera::addForm('form')->addFields(
+   TextField::create('id')->setName("test")->setLabel("label")->make()
+)->create();
 
 // echo $pera;
 // var_dump($pera);
