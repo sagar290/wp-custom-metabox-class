@@ -2,17 +2,16 @@
 
 class Pera {
     public $fields;
-    public $id;
+    public static $id;
     static function addForm($id): Pera {
-        
-        $pera = new Pera();
-        $pera->id = $id;
-        return $pera;
+        static::$id = $id;
+        return new static();
     }
     function addColumn($columnSize) {
         return $this;
     }
-    function addFields(FieldInterface ...$fields) {
+    function addFields(...$fields) {
+        // var_dump($fields);
         $this->fields = $fields;
         return $this;
     }
@@ -34,23 +33,20 @@ class Pera {
 
 class AbstractField {
     public $id = "";
-    public $name = "";
+    public static $name = "";
     public $label = "";
     public $default = "";
     public $value = "";
+    public $field;
 
-    public static function create($id) {
-        
-        $abs = new AbstractField();
-        $abs->id = $id;
-        return $abs;
-    }
-    public function setName($name) {
-        $this->name = $name;
-        return $this;
+
+    public static function setName($name) {
+        static::$name = $name;
+        return new static();
     }
     public function setLabel($value) {
         $this->label = $value;
+        return $this;
     }
     public function setDefault($value) {
         $this->default = $value;
@@ -61,38 +57,42 @@ class AbstractField {
         return $this;
     }
 
+    public function create() {
+        return $this->field;
+    }
+
+
 }
 
 
 interface FieldInterface {
-    static function create($id);
-    function setName($name): FieldInterface;
+    static function setName($name): FieldInterface;
     function setLabel($value): FieldInterface;
     function setDefault($value): FieldInterface;
     function setValue($value): FieldInterface;
+    function create();
 }
 
 
 
-class TextField {
+class TextField extends AbstractField {
 
     public $field;
 
-    public function make() {
-
-        // return "text";
+    public function create() {
         $field = "";
-        $field .= "<label for='{$this->name}'>{$this->label}</label>";
-        $field .= "<textarea name='{$this->name}'></textarea>";
+        $field .= "<label for='". parent::$name ."'>".$this->label."</label>";
+        $field .= "<textarea name='".parent::$name."'></textarea>";
         $this->field = $field;
-        return $this;
+        return $this->field;
     }
 }
-$pera = new TextField;
-var_dump($pera->make()->field);
-// $pera = Pera::addForm('form')->addFields(
-//    TextField::create('id')->setName("test")->setLabel("label")->make()
-// )->create();
 
-// echo $pera;
+
+$pera = Pera::addForm('form')->addFields(
+   TextField::setName('id')->setName("test")->setLabel("label")->create()
+)->create();
+
+
+echo $pera;
 // var_dump($pera);
