@@ -28,9 +28,6 @@ class Pera {
     }
 }
 
-
-
-
 class AbstractField {
     public $id = "";
     public static $name = "";
