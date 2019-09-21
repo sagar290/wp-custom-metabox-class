@@ -1,9 +1,9 @@
 <?php
 
-class Pera {
+class Alpine {
     public $fields;
     public static $id;
-    static function addForm($id): Pera {
+    static function addForm($id): Alpine {
         static::$id = $id;
         return new static();
     }
@@ -11,7 +11,7 @@ class Pera {
         return $this;
     }
     function addFields(...$fields) {
-        // var_dump($fields);
+        // var_dump($fields); 
         $this->fields = $fields;
         return $this;
     }
@@ -20,7 +20,7 @@ class Pera {
         $form = "";
         $form .= "<form>";
         foreach($this->fields as $field) {
-            $form .= $field->field;
+            $form .= $field;
         }
         $form .= "</form>";
 
@@ -34,11 +34,13 @@ class AbstractField {
     public $label = "";
     public $default = "";
     public $value = "";
+    public $type = "text";
     public $field;
 
 
+
     public static function setName($name) {
-        static::$name = $name;
+        self::$name = $name;
         return new static();
     }
     public function setLabel($value) {
@@ -54,8 +56,27 @@ class AbstractField {
         return $this;
     }
 
+    public function setType($type) {
+        $this->type = $type;
+        return $this;
+    }
+
     public function create() {
         return $this->field;
+    }
+
+
+
+    public function getName() {
+        return self::$name;
+    }
+
+    public function getLabel() {
+        return $this->label;
+    }
+
+    public function getType() {
+        return $this->type;
     }
 
 
@@ -78,18 +99,33 @@ class TextField extends AbstractField {
 
     public function create() {
         $field = "";
-        $field .= "<label for='". parent::$name ."'>".$this->label."</label>";
-        $field .= "<textarea name='".parent::$name."'></textarea>";
+        $field .= "<label for='". $this->getName() ."'>".$this->getLabel()."</label>";
+        $field .= "<textarea name='".$this->getName()."'></textarea>";
+        $this->field = $field;
+        return $this->field;
+    }
+}
+
+class Input extends AbstractField {
+
+    public $field;
+
+    public function create() {
+        $field = "";
+        $field .= "<label for='". $this->getName() ."'>".$this->getLabel()."</label>";
+        $field .= "<input type='". $this->getType() ."' name='".$this->getName()."'></input>";
         $this->field = $field;
         return $this->field;
     }
 }
 
 
-$pera = Pera::addForm('form')->addFields(
-   TextField::setName('id')->setName("test")->setLabel("label")->create()
+
+$alpine = Alpine::addForm('form')->addFields(
+   TextField::setName('id')->setName("test")->setLabel("label")->create(),
+   TextField::setName('id')->setName("test")->setLabel("label")->create(),
+   Input::setName('id')->setName("test")->setLabel("label")->create()
 )->create();
 
 
-echo $pera;
-// var_dump($pera);
+echo $alpine;
