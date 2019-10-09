@@ -101,6 +101,15 @@ class AbstractField
         return $this;
     }
 
+    public function setOptions($arr) 
+    {   
+        if (!is_array($arr)) {
+           throw new Exception("{$arr} is not an array!", 1);
+        }
+        $this->options = $arr;
+        return $this;
+    }
+
     public function disable($bool = true) 
     {
         $this->disable = $bool;
@@ -423,12 +432,69 @@ class URLField extends AbstractField
     }
 }
 
+/**
+ * @ Select
+ */
+
+class SelectField extends AbstractField
+{
+
+    public $field;
+
+    public function create()
+    {   
+
+        $default = $this->getDefault();
+        $field = "";
+        $field .= "<label for='{$this->getName()}'>{$this->getLabel()}</label>";
+        $field .= "<select name='{$this->getName()}'>";
+
+        foreach ($this->getOptions() as $key => $value) {
+            $selected = ($key == $default)? "selected": "";
+            $field .= "<option {$selected} value=\"{$key}\">{$value}</option>";
+        }
+        $field .= "</select>";
+        $this->field = $field;
+        return $this->field;
+    }
+}
+
+/**
+ * @ Multy Select
+ */
+
+class MultySelectField extends AbstractField
+{
+
+    public $field;
+
+    public function create()
+    {   
+
+        $default = $this->getDefault();
+        $field = "";
+        $field .= "<label for='{$this->getName()}'>{$this->getLabel()}</label>";
+        $field .= "<select name='{$this->getName()}' multiple>";
+
+        foreach ($this->getOptions() as $key => $value) {
+            $selected = ($key == $default)? "selected": "";
+            $field .= "<option {$selected} value=\"{$key}\">{$value}</option>";
+        }
+        $field .= "</select>";
+        $this->field = $field;
+        return $this->field;
+    }
+}
+
 $alpine = Alpine::addForm('form')->addFields(
     TextAreaField::setName('id')->setName("Text_Area")->setLabel("Text Area")->create(),
     TextField::setName('id')->setName("Text_Field")->setLabel("Text Field")->create(),
     ColorField::setName('id')->setName("Color_Field")->setLabel("Color Label")->create(),
     DateField::setName('id')->setName("Date_Field")->setLabel("Date Label")->create(),
-    NumberField::setName('id')->setName("NumberField")->setLabel("NumberField Label")->create()
+    NumberField::setName('id')->setName("NumberField")->setLabel("NumberField Label")->create(),
+    MultySelectField::setName('id')->setName("NumberField")->setLabel("NumberField Label")->setOptions([
+        "test", "test2", "test3" 
+    ])->setDefault(2)->create()
 )->create();
 
 
