@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 /**
  * @wordpress-plugin
- * Plugin Name:			META BOX
+ * Plugin Name:			ALPINE META BOX
  * Plugin URI:			https://www.sagardash.com
  * Description:       	Best Metabox ever.
  * Version:           	1.0.0
