@@ -1,0 +1,3 @@
+[submodule "classes/custom_post"]
+	path = classes/custom_post
+	url = https://github.com/sagar290/AlpineCustomPost.git
